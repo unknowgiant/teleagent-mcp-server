@@ -1,0 +1,12 @@
+﻿基站表生图引擎部署包（station-dxf-js）
+版本：v3.1（A1/A3 标准图幅 + 文字避让引擎 + R12 合规化）
+同步时间：2026-11-05 17:5x
+同步来源：E:\软件开发\基站表生图\app\js
+文件清单：draw-core.js / tower-templates.js / data-model.js / dxf.js / sheet-templates.js / libs\xlsx.full.min.js
+更新说明：
+  - dxf.js v3.1：dodgeTexts 文字避让（碰撞检测→引出线）、R12 合规 POLYLINE/TEXT 对齐点、中文 \U+XXXX 转义、ASCII 图层名
+  - draw-core.js：世界图元/图签图元记录流拆分（sheetRec）
+  - sheet-templates.js：DPaper.rect 线宽键修复、标题栏含站址经纬度、走线架/俯视图/面板分格布局修正、塔上标注 dodge
+
+
+AI生成

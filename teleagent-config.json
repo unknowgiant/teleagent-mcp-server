@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "telecom_agent_mcp": {
+      "command": "E:\\软件开发\\teleagent-mcp-server\\.venv\\Scripts\\python.exe",
+      "args": ["E:\\软件开发\\teleagent-mcp-server\\server.py"]
+    }
+  }
+}

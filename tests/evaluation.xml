@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<evaluation>
+  <qa_pair>
+    <question>在通信设计规范宝典中检索"抗震设防"相关的强制性条文，共命中多少条？其中 GB 51194-2016 的 1.0.4 条对抗震设防烈度有何要求？</question>
+    <answer>共命中 31 条强制性条文（mandatory_only=true, query="抗震设防"）。GB 51194-2016《通信电源设备安装工程设计规范》第 1.0.4 条：在我国抗震设防烈度7度以上(含7度)地区，公用电信网中使用的电源设备必须满足抗震设防要求。</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>使用 generate_station_dxf 工具，对模板工作簿（E:\软件开发\基站表生图\基站数据模板.xlsx）中"示范站F-人民医院楼顶"这一站点以 single 模式出图，生成的 DXF 文件中该站是什么塔型、塔体高度和总挂高分别是多少米？</question>
+    <answer>楼顶抱杆（roofpole），塔体高度 6m，总挂高 33m（楼顶约 27m + 抱杆 6m），3 层平台、3 副天线。</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>基站表生图支持哪些塔型？如果 Excel 主表中塔型填写的文字无法识别，系统如何处理？</question>
+    <answer>支持 10 类塔型：单管塔、角钢塔、三管塔、拉线塔、H杆、楼顶抱杆、楼顶平台（增高架）、美化塔(树形)、美化塔(路灯)、美化塔(水塔)。塔型无法识别时按单管塔示意绘制，并在 warnings 中提示"塔型'XXX'无法识别，按单管塔示意"。</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>以 kit 模式为一个基站出整套设计院图纸，会生成哪几张图？</question>
+    <answer>每站 6 张：01-机房布置平面图、02-综合柜立面图、03-机房导线路由布置示意图、04-天馈线系统安装示意图、05-工艺要求及施工安全措施说明图（一）、06-工艺要求及施工安全措施说明图（二）。</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>宝典数据库共收录多少项标准、多少条强制性条文、覆盖哪些专业分类？</question>
+    <answer>128 项标准、782 条强制性条文，专业分类为：无线网(40)、线路(25)、设备(28)、外市电(71)、集客(28)、管道(10)、补充核验(4)。</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>检索标准号为 "YD/T 5231" 的规范中关于"螺栓"的条文，命中的条文号是什么？</question>
+    <answer>用 code="YD/T 5231" + query="螺栓" 检索，命中《移动通信工程钢塔桅结构设计规范》中涉及螺栓连接的条文（如塔体连接螺栓相关条款）。</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>compose_design_doc 工具生成的《基站建设工程设计方案》包含哪些章节？</question>
+    <answer>封面（项目名/工程编号/设计单位/编制日期）、一、编制依据（规范条文级引用）、二、工程概况（站点汇总表）、三、建设方案（分站小节）、四、图纸清单、五、注意事项（如有），以及可选的附加章节。</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>generate_station_dxf 返回的 JSON 中 stations 数组包含哪些站点摘要字段？这些字段如何被复用？</question>
+    <answer>包含 name（站名）、tower（塔型）、towerKey、height（塔高）、totalHeight（总高）、platforms（平台层数）、antennas（天线数）、addr、lon、lat、projNo、projName、warns。可直接作为 compose_design_doc 的 stations 输入，自动写入工程概况表和建设方案章节。</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>如果 Excel 数据缺少「安装明细表」工作表，出图工具会怎样处理？</question>
+    <answer>生成 warning"未找到「安装明细表」，所有基站将只绘制塔体与平台"，站点仍可出图但无天线明细；若缺少「基站主表」则返回 errors 并终止。</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>调用 telecom_suite_status 自检，返回的 checks 包含哪四项组件检查？各检查什么？</question>
+    <answer>baodian_data（宝典数据文件存在性与统计）、station_engine（表生图 JS 引擎与 Node 出图脚本）、node（Node.js 运行时及版本）、document_engine（python-docx 文档生成依赖）。</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>design_dedicated_line 工具如何计算路由长度？支持哪些专线类型与敷设方式？一次调用能产出哪三件套？单价从哪里来？</question>
+    <answer>路由长度 = 客户与接入局站经纬度的球面直线距离（haversine）× 绕曲系数（默认 1.35）；也可用 route_length_km 直接覆盖路由长度或用 distance_km 覆盖直线距离；双路由保护时第二路由按主路由 80% 估算。支持 5 类专线（pon/mstp/otn/ethernet/darkfiber）× 3 种敷设（管道/架空/直埋）。一次调用可同时产出：方案 Word（.docx）+ 路由示意图（.dxf）+ 投资估算表（.xlsx，估算汇总/材料明细/设备明细三表）。单价来自 config/dedline_prices.json 参考单价表（可编辑校准，非 451 定额权威数据）。</answer>
+  </qa_pair>
+</evaluation>
